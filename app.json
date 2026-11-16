@@ -1,0 +1,32 @@
+{
+  "$schema": "../sdk-app-gates/schema/app-manifest.schema.json",
+  "name": "rewind",
+  "owner": {
+    "team": "Unify frontend",
+    "contact": "m.peters@bizzdesign.com"
+  },
+  "purpose": "Play back a year in the Unify knowledge graph as a story (the team's year, or one person's) and save a card to share. Runs in the browser against the customer's own tenant.",
+  "tier": "experimental",
+  "capabilities": [
+    "read"
+  ],
+  "externalHosts": [
+    "*.unify.cloud",
+    "*.bizzdesign.dev"
+  ],
+  "source": {
+    "include": [
+      "src"
+    ]
+  },
+  "explore": {
+    "env": {
+      "VITE_UNIFY_GRAPHQL_URL": "https://gates.invalid/graphql",
+      "VITE_COGNITO_DOMAIN": "gates.invalid",
+      "VITE_COGNITO_USER_POOL_ID": "eu-west-1_Gates",
+      "VITE_COGNITO_CLIENT_ID": "gatesgatesgatesgatesgates1"
+    },
+    "maxClicks": 150,
+    "journeys": []
+  }
+}

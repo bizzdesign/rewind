@@ -1,0 +1,410 @@
+/*
+ * Unify look and feel, layered over style.css. Colours, radii and type come
+ * from the Unify frontend's design tokens (nextgen-frontend libs/shared/styles,
+ * variables-v2.scss); see src/brand.ts for the same values in TypeScript.
+ * Remove the <link> to this file in index.html for Rewind's original look.
+ */
+
+:root {
+  --u-brand: #006bfa; /* BDcolorAccentBrandDefault */
+  --u-brand-emphasized: #0040d6;
+  --u-brand-strong: #002885;
+  --u-brand-subtle: #c7e3ff;
+  --u-brand-weak: #e8f3ff;
+  --u-repository: #852edd;
+  --u-text: #131619;
+  --u-text-secondary: #696f74;
+  --u-border: #dee1e5;
+  --u-field-border: #c2c7cc;
+  --u-section: #f2f4f8;
+  --u-page: #ffffff;
+  --u-focus: #004bfa;
+  --u-radius: 4px; /* BDbuttonBorderRadius */
+  --u-radius-card: 8px; /* BDradiusLarge */
+  --u-shadow: 0 4px 8px 0 #dee1e5; /* BDshadowHover */
+
+  /* The base styles' names, pointed at Unify. */
+  --ink: var(--u-text);
+  --dim: var(--u-text-secondary);
+  --lime: var(--u-brand);
+  --line: var(--u-border);
+  color-scheme: light;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+html,
+body {
+  background: var(--u-section);
+  color: var(--u-text);
+}
+body {
+  background:
+    radial-gradient(70vmax 50vmax at 100% -10%, var(--u-brand-weak), transparent 65%),
+    radial-gradient(50vmax 40vmax at -10% 110%, #f4ecfd, transparent 60%),
+    var(--u-section);
+  background-attachment: fixed;
+}
+
+/* ── Controls ─────────────────────────────────────────────────────── */
+
+button,
+.button,
+select {
+  color: var(--u-text);
+  background: var(--u-page);
+  border: 1px solid var(--u-field-border);
+  border-radius: var(--u-radius);
+  font-weight: 600;
+}
+button:hover,
+.button:hover {
+  background: #f4f9ff; /* BDcolorBackgroundFieldHover */
+}
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--u-focus);
+  outline-offset: 2px;
+}
+button.primary {
+  background: var(--u-brand);
+  border-color: var(--u-brand);
+  color: #fff;
+}
+button.primary:hover {
+  background: var(--u-brand-emphasized);
+  border-color: var(--u-brand-emphasized);
+}
+button.ghost {
+  background: transparent;
+  border-color: transparent;
+}
+.chip {
+  background: var(--u-brand-weak);
+  color: var(--u-brand-emphasized);
+  border-radius: 50px;
+}
+
+/* ── Lobby ────────────────────────────────────────────────────────── */
+
+.brand {
+  gap: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--u-text);
+}
+.brand .dot {
+  display: none;
+}
+.unify-logo {
+  display: inline-flex;
+  color: #00234c; /* the wordmark's own navy */
+}
+.unify-logo svg {
+  height: 30px;
+  width: auto;
+}
+.brand-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--u-border);
+}
+.lobby .top {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--u-border);
+}
+.eyebrow {
+  color: var(--u-brand);
+  letter-spacing: 0.08em;
+}
+.lobby-title {
+  color: var(--u-text);
+  letter-spacing: -0.04em;
+}
+.lobby-title .accent {
+  color: var(--u-brand);
+}
+.lobby .lead {
+  color: var(--u-text-secondary);
+}
+.glance {
+  gap: 12px;
+}
+.glance div {
+  min-width: 150px;
+  padding: 16px 20px;
+  background: var(--u-page);
+  border: 1px solid var(--u-border);
+  border-radius: var(--u-radius-card);
+}
+.glance strong {
+  color: var(--u-brand-strong);
+}
+.glance span {
+  color: var(--u-text-secondary);
+}
+.side {
+  padding: 20px;
+  background: var(--u-page);
+  border: 1px solid var(--u-border);
+  border-radius: var(--u-radius-card);
+  box-shadow: var(--u-shadow);
+  align-self: start;
+}
+.pick {
+  color: var(--u-text);
+  font-size: 0.9rem;
+}
+.pick select {
+  border-radius: var(--u-radius);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23131619' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 14px center,
+    var(--u-page);
+}
+.pick select option {
+  background: var(--u-page);
+  color: var(--u-text);
+}
+.years {
+  background: var(--u-section);
+  border: 1px solid var(--u-border);
+  border-radius: var(--u-radius);
+  padding: 3px;
+}
+.years button {
+  border-radius: 3px;
+  color: var(--u-text-secondary);
+}
+.years button[aria-pressed='true'] {
+  background: var(--u-page);
+  color: var(--u-brand-emphasized);
+  box-shadow: 0 1px 2px rgba(19, 22, 25, 0.12);
+}
+.footnote {
+  color: var(--u-text-secondary);
+}
+
+/* ── Loading ──────────────────────────────────────────────────────── */
+
+.disc {
+  width: 56px;
+  height: 56px;
+  background: none;
+  box-shadow: none;
+  border: 4px solid var(--u-brand-subtle);
+  border-top-color: var(--u-brand);
+  animation: spin 0.9s linear infinite;
+}
+.disc::after {
+  display: none;
+}
+.center h1,
+.center h2 {
+  color: var(--u-text);
+}
+
+/* ── Story ────────────────────────────────────────────────────────── */
+
+.player {
+  background: rgba(0, 35, 76, 0.55);
+}
+@media (max-width: 640px) {
+  .player {
+    background: var(--u-brand-strong);
+  }
+}
+.frame {
+  border-radius: 16px; /* BDradiusXxLarge */
+  box-shadow: 0 40px 120px rgba(0, 35, 76, 0.35);
+}
+.nav {
+  border-radius: 50%;
+}
+
+/* Slide themes. Navy for the cover, awards and outro; every other slide wears a
+   BDCore layer's colour (src/brand.ts): Unify's pastel token pushed to a vivid
+   version, navy text, and the layer's deep tone for highlights. */
+.frame[data-theme='night'] {
+  --bg: #002885;
+  --fg: #ffffff;
+  --hl: #33ddf2;
+  --soft: rgba(255, 255, 255, 0.78);
+  --track: rgba(255, 255, 255, 0.16);
+  --blob1: #006bfa;
+  --blob2: #852edd;
+}
+.frame[data-theme='application'] {
+  --bg: #00c4e0;
+  --fg: #00234c;
+  --hl: #004e5a;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #80deea;
+  --blob2: #004e5a;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #00c4e0 62%, #004e5a) 0%, transparent 60%), #00c4e0;
+}
+.frame[data-theme='business'] {
+  --bg: #ffe234;
+  --fg: #00234c;
+  --hl: #5c4d00;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #fff59d;
+  --blob2: #5c4d00;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #ffe234 62%, #5c4d00) 0%, transparent 60%), #ffe234;
+}
+.frame[data-theme='strategy'] {
+  --bg: #ff9f1a;
+  --fg: #00234c;
+  --hl: #7a3d00;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #ffcc80;
+  --blob2: #7a3d00;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #ff9f1a 62%, #7a3d00) 0%, transparent 60%), #ff9f1a;
+}
+.frame[data-theme='motivation'] {
+  --bg: #a57af2;
+  --fg: #00234c;
+  --hl: #2e1470;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #c9b5ef;
+  --blob2: #2e1470;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #a57af2 62%, #2e1470) 0%, transparent 60%), #a57af2;
+}
+.frame[data-theme='data'] {
+  --bg: #5c9bff;
+  --fg: #00234c;
+  --hl: #0a2f75;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #a6c8ff;
+  --blob2: #0a2f75;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #5c9bff 62%, #0a2f75) 0%, transparent 60%), #5c9bff;
+}
+.frame[data-theme='technology'] {
+  --bg: #3fe07a;
+  --fg: #00234c;
+  --hl: #0a5228;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #b9f6ca;
+  --blob2: #0a5228;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #3fe07a 62%, #0a5228) 0%, transparent 60%), #3fe07a;
+}
+.frame[data-theme='implementation'] {
+  --bg: #ff7a6b;
+  --fg: #00234c;
+  --hl: #7a1a10;
+  --soft: rgba(0, 35, 76, 0.78);
+  --track: rgba(0, 35, 76, 0.14);
+  --blob1: #ffb2a8;
+  --blob2: #7a1a10;
+  background: radial-gradient(120% 70% at 0% 100%, color-mix(in srgb, #ff7a6b 62%, #7a1a10) 0%, transparent 60%), #ff7a6b;
+}
+
+/* Softer colour fields, and a knowledge graph in place of the record rings. */
+.blob {
+  opacity: 0.35;
+  filter: blur(14px);
+}
+.b2 {
+  opacity: 0.18;
+}
+.ring {
+  display: none;
+}
+.graph {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--fg);
+  opacity: 0.22;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.graph line {
+  stroke: currentColor;
+  stroke-width: 0.35;
+}
+.graph circle {
+  fill: var(--hl);
+}
+.frame[data-theme='night'] .graph circle {
+  fill: currentColor;
+}
+@keyframes drift {
+  to {
+    transform: translate(-2cqw, 2cqw) rotate(-2deg);
+  }
+}
+
+/* Story buttons follow Unify's corner radius. */
+.cta button {
+  border-radius: var(--u-radius);
+  background: transparent;
+}
+.cta button.primary {
+  background: var(--hl);
+  border-color: var(--hl);
+  color: var(--bg);
+}
+.top-actions .icon {
+  border-radius: 50%;
+}
+.award,
+.ranking li,
+.slide .callout {
+  border-radius: 2.4cqw;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .graph {
+    animation: none !important;
+  }
+}
+
+/* Connect and help pages: Unify's white cards and fields. */
+.panel {
+  background: var(--u-page);
+  border-color: var(--u-border);
+  border-radius: var(--u-radius-card);
+}
+.page input,
+.page textarea {
+  background: var(--u-page);
+  border-color: var(--u-field-border);
+  border-radius: var(--u-radius);
+  color: var(--u-text);
+}
+.page input::placeholder,
+.page textarea::placeholder {
+  color: var(--u-text-secondary);
+}
+.page .top {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--u-border);
+}
+.bad {
+  color: #bd1822; /* BDcolorStatusDangerEmphasized */
+}
+.good {
+  color: #1b602f; /* BDcolorStatusSuccessEmphasized */
+}
+.notice.bad {
+  background: #ffe1e3;
+  border-color: #fea3a8;
+}
+.copy code,
+.panel code {
+  background: var(--u-section);
+}
+.links a,
+button.link,
+.page a,
+details.values summary,
+.steps > li::marker {
+  color: var(--u-brand-emphasized);
+}

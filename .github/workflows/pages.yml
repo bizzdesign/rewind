@@ -1,0 +1,61 @@
+# Builds Rewind and publishes it to GitHub Pages on every push to main.
+#
+# The site is static: it signs each visitor in to their own Unify environment
+# and holds no secrets. The SDK comes from GitHub Packages, read with this
+# workflow's own token; that works when this repository is in the same
+# organisation as @bizzdesign/sdk-bundle and has read access to the package
+# (package settings > Manage Actions access).
+#
+# The site lives under /<repository name>/ unless the repository variable
+# REWIND_BASE_PATH says otherwise (set it to / when using a custom domain).
+# Every customer's admin registers the published address, exactly, as the
+# redirect URL of their Rewind app client; the help page shows it.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@bizzdesign'
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm test
+      - run: npm run build
+        env:
+          BASE_PATH: ${{ vars.REWIND_BASE_PATH || format('/{0}/', github.event.repository.name) }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

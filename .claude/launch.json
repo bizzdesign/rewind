@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "rewind", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "--port", "4206", "--strictPort"], "port": 4206 }
+  ]
+}
