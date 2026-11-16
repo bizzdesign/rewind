@@ -74,11 +74,13 @@ Accounts with the same name are merged into one person, so someone with a passwo
 
 Rewind is a static page that signs each visitor in to **their own** Unify environment; nothing goes through Bizzdesign. The in-app help page (`#help`) is the walk-through people read; in short:
 
-- **Once per organisation, a Unify admin** (system administrator role) opens Unify Management › App clients and creates an **Authorization code** client named Rewind, with the page's address as redirect URL and sign-out URL (the help page shows the exact address with a copy button). They share the client ID.
-- **Everyone, the first time:** on the connection screen, type the Unify address, open its connection details (`<address>/env.js`) in a new tab, paste the whole page, add the client ID and a name, then *Save and sign in*. Opening the file in a tab avoids reading it across sites, which Unify doesn't allow.
-- **Next time:** the connection is remembered in that browser. *Switch* picks another or adds one; *Sign out* ends the Unify session.
+- **Once per organisation, a Unify admin** (system administrator role) opens Unify Management › Configuration › **MCP Server Callbacks** and adds the page's address, e.g. `https://bizzdesign.github.io/rewind/`. That list is the redirect URLs of Unify's own (default) app client, the one with Unify's sign-in page.
+- **Everyone, the first time:** type the Unify address on the connection screen. Rewind looks up the connection details from `<address>/env.js` (see below), suggests a name, and *Save and sign in* goes to the tenant's own sign-in page.
+- **Next time:** the connection is remembered in that browser. *Switch* picks another or adds one; *Sign out* forgets the sign-in in this browser.
 
-From env.js Rewind uses three values: `appSyncUrl`, `cognitoDomain` and `cognitoUserPoolId` (the region is the pool ID's prefix; live updates aren't used). The client ID replaces env.js's own, which only redirects to Unify itself. Connections are kept in `localStorage`; none of it is secret.
+**Why not App clients?** Unify Management can create *Authorization code* app clients, which would be the clean way, but Unify's sign-in uses Cognito's managed login, and those clients get no managed-login style, so Cognito shows "Login pages unavailable" (Nov 2026). Fixing that means creating a managed-login branding for each new code-flow client in the backend's `AppClientService`; then an admin could give Rewind its own client and enter its ID under *Connection details*.
+
+**The lookup.** env.js has no CORS headers, so it can't be fetched as data from another site, but it is served as JavaScript and may run as a script. Rewind runs it in a sandboxed iframe (scripts only, opaque origin, no access to Rewind's storage) and takes back four strings: `appSyncUrl`, `cognitoDomain`, `cognitoUserPoolId` and `cognitoClientId` (`src/envjs.ts`). If that fails, people paste the file, or type the values from Unify Management › Configuration. The region is the pool ID's prefix; live updates aren't used. Connections are kept in `localStorage`; none of it is secret.
 
 ## Publishing on GitHub Pages
 

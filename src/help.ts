@@ -25,7 +25,7 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
 
       <nav class="toc panel" aria-label="On this page">
         <a href="#need">What you need</a>
-        <a href="#admin">For admins: set up once</a>
+        <a href="#admin">For admins: add Rewind once</a>
         <a href="#connect-steps">For everyone: connect</a>
         <a href="#next-time">Next time</a>
         <a href="#privacy">What Rewind reads</a>
@@ -35,36 +35,34 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
       <article class="panel" id="need">
         <h2>What you need</h2>
         <ul>
-          <li><strong>Your Unify address</strong>, the one you open Unify on, e.g. <code>https://yourcompany.unify.cloud</code>.</li>
-          <li><strong>An app client ID for Rewind.</strong> Your Unify admin creates it once for your whole organisation (below) and shares it.</li>
+          <li><strong>Your Unify address</strong>, the one you open Unify on, e.g. <code>https://yourcompany.unify.cloud</code>. Rewind looks up everything else from it.</li>
           <li><strong>Your own Unify account.</strong> You sign in as yourself and see only what your account can read.</li>
+          <li><strong>Rewind added once by your Unify admin</strong> (below). Until then, signing in stops with an error on your Unify’s sign-in page.</li>
         </ul>
       </article>
 
       <article class="panel" id="admin">
-        <h2>For admins: set Rewind up once</h2>
-        <p>Your Unify only lets people sign in from addresses it knows. Registering Rewind as an <em>app client</em> tells it about this page. You need the system administrator role in Unify.</p>
+        <h2>For admins: add Rewind once</h2>
+        <p>Your Unify only sends people back to addresses it knows. Rewind signs in through Unify’s own sign-in page, the same one MCP connectors such as Claude use, so you add Rewind’s address where those are listed. You need the system administrator role.</p>
         <ol class="howto">
-          <li>Open <strong>Unify Management</strong> and go to <strong>App clients</strong>.</li>
-          <li>Choose <strong>Create</strong>, name it <strong>Rewind</strong>, and pick the <strong>Authorization code</strong> flow. (Not client credentials: people sign in as themselves, so it has no secret and no roles of its own.)</li>
-          <li>Under <strong>Redirect URLs</strong>, add exactly: ${copy(o.redirect)}</li>
-          <li>Add the same address as a <strong>sign-out URL</strong>, so <em>Sign out</em> brings people back here.</li>
-          <li>Save, and copy the new client’s <strong>Client ID</strong>.</li>
-          <li>Share the client ID and your Unify address with your colleagues, for instance with a link to this page.</li>
+          <li>Open <strong>Unify Management</strong> and go to <strong>Configuration</strong>.</li>
+          <li>Scroll to <strong>MCP Server Callbacks</strong>.</li>
+          <li>Add exactly: ${copy(o.redirect)}</li>
+          <li>Tell your colleagues: open Rewind, type your Unify address, and sign in. There’s nothing else to share.</li>
         </ol>
-        <p class="muted small">The redirect URL must match to the character, including <code>https://</code> and any trailing slash. To remove Rewind later, delete the app client; nobody can sign in through it after that.</p>
+        <p class="muted small">The address must match to the character, including <code>https://</code> and the trailing slash. To stop Rewind signing in, remove it from that list again.</p>
+        <p class="muted small"><strong>Why not App clients?</strong> An app client created under Unify Management › App clients doesn’t get Unify’s sign-in page yet: signing in with it shows “Login pages unavailable”. Once that’s fixed, an <em>Authorization code</em> client (not client credentials) with this address as redirect URL will work too; enter its client ID under Connection details.</p>
       </article>
 
       <article class="panel" id="connect-steps">
         <h2>For everyone: connect</h2>
         <ol class="howto">
-          <li>Open Rewind and choose <strong>Add your connection</strong>.</li>
-          <li>Type your <strong>Unify address</strong> and choose <strong>Open connection details</strong>. A page full of settings opens in a new tab.</li>
-          <li>On that page, select everything (Ctrl A, or ⌘ A on a Mac), copy it, and paste it into <strong>Paste the connection details</strong>. Rewind picks out the three values it needs. (Or open <em>Enter the values by hand</em> and fill in <code>appSyncUrl</code>, <code>cognitoDomain</code> and <code>cognitoUserPoolId</code> from that page.)</li>
-          <li>Paste the <strong>app client ID</strong> from your admin.</li>
-          <li>Give the connection a name and choose <strong>Save and sign in</strong>. You sign in on your own Unify’s sign-in page and come straight back.</li>
+          <li>Open Rewind. The first time, it asks for your connection.</li>
+          <li>Type your <strong>Unify address</strong> and press Enter (or <strong>Look up</strong>). Rewind reads your Unify’s public connection details and says when it found them.</li>
+          <li>Keep or change the <strong>name</strong>, and choose <strong>Save and sign in</strong>. You sign in on your own Unify’s sign-in page and come straight back.</li>
           <li>Choose <strong>Play our year</strong>, <strong>Play your year</strong>, or anyone else’s. Tap or use the arrow keys to move, hold to pause, and save the card at the end.</li>
         </ol>
+        <p class="muted small">If the lookup can’t reach your Unify (a strict network, say), open <strong>Connection details</strong>: follow the link to your connection details, select everything, copy it and paste it in. Or type the four values; an admin finds them in Unify Management › Configuration (GraphQL Endpoint, Domain, UserPool ID, Default App Client ID).</p>
       </article>
 
       <article class="panel" id="next-time">
@@ -72,7 +70,7 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
         <ul>
           <li>Your connection is remembered in this browser: open Rewind and you’re signed straight in, or asked to sign in again when your session has expired.</li>
           <li><strong>Switch</strong> (top of the page) takes you back to your connections: pick another one, add one for a second environment, or remove one.</li>
-          <li><strong>Sign out</strong> ends your Unify session. On a shared computer, also remove the connection.</li>
+          <li><strong>Sign out</strong> makes this browser forget your sign-in and takes you back to your connections. Your Unify sign-in itself can last up to an hour; sign out in Unify to end it, and on a shared computer also remove the connection.</li>
           <li>On another browser or computer you add the connection once more.</li>
         </ul>
       </article>
@@ -93,17 +91,13 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
         <h2>If it doesn’t work</h2>
         <dl class="faq">
           <dt>The sign-in page says <code>redirect_mismatch</code> or “An error was encountered”</dt>
-          <dd>The app client doesn’t list this page. Ask your admin to add exactly ${copy(o.redirect)} as a redirect URL.</dd>
-          <dt>“Missing” values after pasting</dt>
-          <dd>Make sure you copied the whole page that opened from <em>Open connection details</em>, or enter the values by hand.</dd>
-          <dt>The connection details page shows an error</dt>
-          <dd>Check the address: it’s the one you open Unify on, without anything after the domain.</dd>
-          <dt>“The app client ID is malformed”, or the sign-in page says the client doesn’t exist</dt>
-          <dd>Copy the client ID again from your admin; it’s 26 letters and digits. A client created for another environment won’t work here.</dd>
+          <dd>Your Unify doesn’t know Rewind yet. Ask your admin to add exactly ${copy(o.redirect)} under Configuration › MCP Server Callbacks.</dd>
+          <dt>The sign-in page says “Login pages unavailable”</dt>
+          <dd>The connection uses an app client from Unify Management › App clients, which has no sign-in page yet. Switch, remove the connection, and add it again from your Unify address, so it uses Unify’s default client.</dd>
+          <dt>“Couldn’t load …/env.js” after typing the address</dt>
+          <dd>Check the address: it’s the one you open Unify on, without anything after the domain. If it’s right, your network may block it; paste the details instead (Connection details).</dd>
           <dt>Loading takes a minute or more</dt>
           <dd>Busy models have tens of thousands of changes a year; Rewind shows how far it is. Keep the tab open.</dd>
-          <dt>Sign out shows an error</dt>
-          <dd>Ask your admin to add this page as a sign-out URL too.</dd>
           <dt>My connections are gone</dt>
           <dd>They live in this browser; clearing site data or a private window forgets them. Add the connection again.</dd>
         </dl>

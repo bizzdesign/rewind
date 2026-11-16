@@ -6,6 +6,7 @@ A read-only SDK app that plays back a year of the Unify knowledge graph as a sha
 
 - `src/sdk.ts` builds the config from a connection, signs in (Cognito authorization code flow, back to `callbackUrl()`: the page address under Vite's `base`) and reads the signed-in user id. A developer's `.env` becomes a built-in connection.
 - `src/connection.ts` (pure, tested): connections, reading a pasted env.js, validation, the redirect URL; kept in `localStorage`.
+- `src/envjs.ts`: looks up a tenant's env.js by running it in a sandboxed iframe (no CORS on env.js); returns four strings.
 - `src/load.ts` holds **every** SDK call, and they are all reads of system stamps. Keep it that way: `app.json` declares `capabilities: ["read"]`, and the gates fail on any write.
 - `src/demo.ts` implements the same `Source` interface (`src/types.ts`) with seeded, generated data, for `?demo` and for running without `.env`. `demo.test.ts` pins the story it tells (March workshop, ServiceNow import, September clean-up, night owl, early bird).
 

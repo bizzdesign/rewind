@@ -16,6 +16,7 @@ describe('parseEnvJs', () => {
       appSyncUrl: 'https://acme-api.unify.cloud/graphql',
       cognitoDomain: 'acme-auth.unify.cloud',
       cognitoUserPoolId: 'eu-west-1_Ex4mpLe12',
+      cognitoClientId: '1ab2cd3ef4gh5ij6kl7mn8op9q',
     });
   });
 
@@ -28,8 +29,30 @@ describe('parseEnvJs', () => {
   });
 
   it('finds nothing in text that is not env.js', () => {
-    expect(parseEnvJs('<html>Not found</html>')).toEqual({ appSyncUrl: undefined, cognitoDomain: undefined, cognitoUserPoolId: undefined });
+    expect(parseEnvJs('<html>Not found</html>')).toEqual({ appSyncUrl: undefined, cognitoDomain: undefined, cognitoUserPoolId: undefined, cognitoClientId: undefined });
   });
+});
+
+it('reads a production env.js, with nested settings and an amazoncognito.com sign-in domain', () => {
+  const env = `globalThis.envConfig = {
+  production: true,
+  cognitoRegion: 'eu-central-1',
+  cognitoDomain: 'bizzdesign-auth-acme.auth.eu-central-1.amazoncognito.com',
+  cognitoUserPoolId: 'eu-central-1_Ex4mpLe34',
+  cognitoClientId: '9zy8xw7vu6ts5rq4po3nm2lk1j',
+  appSyncUrl: 'https://acme.api.svc.unify.cloud/graphql',
+  batchImport: {
+    parallelRequests: 5,
+  },
+};`;
+  const v = parseEnvJs(env);
+  expect(v).toEqual({
+    appSyncUrl: 'https://acme.api.svc.unify.cloud/graphql',
+    cognitoDomain: 'bizzdesign-auth-acme.auth.eu-central-1.amazoncognito.com',
+    cognitoUserPoolId: 'eu-central-1_Ex4mpLe34',
+    cognitoClientId: '9zy8xw7vu6ts5rq4po3nm2lk1j',
+  });
+  expect(problems({ name: 'Acme', graphqlUrl: v.appSyncUrl, cognitoDomain: v.cognitoDomain, userPoolId: v.cognitoUserPoolId, clientId: v.cognitoClientId })).toEqual([]);
 });
 
 describe('addresses', () => {

@@ -74,9 +74,21 @@ export async function connect(c: Connection): Promise<{ kg: Kg; me?: string }> {
   return { kg: sdk.knowledgeGraphClient('BDCore'), me };
 }
 
-/** Signs out of the tenant (its sign-out URL list must include this page) and comes back here. */
-export async function signOut(): Promise<void> {
-  await sdk?.authClient.logout();
+/**
+ * Forgets this browser's sign-in for a connection: the tokens the SDK keeps in
+ * localStorage under the client ID. No round trip through the tenant's sign-out
+ * page, as Unify's default client (the MCP callback list) doesn't list Rewind as
+ * a sign-out URL. The tenant's own sign-in session may still let the next sign-in
+ * through without a password; signing out in Unify ends that.
+ */
+export function signOutHere(clientId: string): void {
+  try {
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith(`CognitoIdentityServiceProvider.${clientId}.`) || key === 'amplify-signin-with-hostedUI') localStorage.removeItem(key);
+    }
+  } catch {
+    // Blocked storage held nothing to forget.
+  }
 }
 
 export function personName(user: { firstName?: string; lastName?: string; email?: string } | undefined | null): string {

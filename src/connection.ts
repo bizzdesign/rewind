@@ -19,7 +19,7 @@ export interface Connection {
   cognitoDomain: string;
   /** env.js `cognitoUserPoolId`; its prefix is the region. */
   userPoolId: string;
-  /** The app client the tenant's admin created for Rewind (Unify Management, App clients). */
+  /** Unify's default app client (env.js cognitoClientId), whose redirect URLs the admin extends with Rewind's address. */
   clientId: string;
   /** From the developer's .env: shown, never stored or removed. */
   builtIn?: boolean;
@@ -32,6 +32,8 @@ export interface EnvValues {
   appSyncUrl?: string;
   cognitoDomain?: string;
   cognitoUserPoolId?: string;
+  /** Unify's own (default) app client. */
+  cognitoClientId?: string;
 }
 
 /**
@@ -47,7 +49,7 @@ export function parseEnvJs(text: string): EnvValues {
     const [, key, , value] = m;
     if (key && value !== undefined && !(key in out)) out[key] = value.trim();
   }
-  return { appSyncUrl: out.appSyncUrl, cognitoDomain: out.cognitoDomain, cognitoUserPoolId: out.cognitoUserPoolId };
+  return { appSyncUrl: out.appSyncUrl, cognitoDomain: out.cognitoDomain, cognitoUserPoolId: out.cognitoUserPoolId, cognitoClientId: out.cognitoClientId };
 }
 
 /** `eu-west-1_AbC123dEf` → `eu-west-1`. */
@@ -95,7 +97,7 @@ export function problems(d: Partial<ConnectionDraft>): string[] {
   }
   if (!d.cognitoDomain || !/^[a-z0-9.-]+$/i.test(cleanDomain(d.cognitoDomain))) out.push('The sign-in domain is missing (cognitoDomain in env.js).');
   if (!d.userPoolId || !/^[a-z]{2}(-[a-z]+)+-\d_[A-Za-z0-9]+$/.test(d.userPoolId.trim())) out.push('The user pool ID is missing or malformed; it looks like eu-west-1_AbC123dEf (cognitoUserPoolId in env.js).');
-  if (!d.clientId || !/^[a-z0-9]{20,40}$/i.test(d.clientId.trim())) out.push('The app client ID is missing or malformed. Your Unify admin creates it in Unify Management, under App clients.');
+  if (!d.clientId || !/^[a-z0-9]{20,40}$/i.test(d.clientId.trim())) out.push('The app client ID is missing or malformed (cognitoClientId in env.js; Unify Management shows it as Default App Client ID).');
   return out;
 }
 

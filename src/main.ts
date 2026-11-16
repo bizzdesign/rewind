@@ -6,7 +6,7 @@ import { demoSource } from './demo';
 import { dayLabel, firstName, n } from './format';
 import { tenantSource } from './load';
 import { type Rewind, buildRewind, isActor } from './rewind';
-import { OBJECT_TYPES, builtInConnection, callbackUrl, connect, esc, signOut } from './sdk';
+import { OBJECT_TYPES, builtInConnection, callbackUrl, connect, esc, signOutHere } from './sdk';
 import { renderConnect } from './connect';
 import { type Connection, activeId, savedConnections, setActive } from './connection';
 import { renderHelp } from './help';
@@ -213,9 +213,10 @@ function lobby(): void {
     </section>`;
   app.querySelectorAll<HTMLButtonElement>('[data-play]').forEach((b) => b.addEventListener('click', () => play(b.dataset.play!)));
   app.querySelector<HTMLButtonElement>('[data-signout]')?.addEventListener('click', () => {
-    // Back to the connection screen next time, not straight into a new sign-in.
+    if (connection) signOutHere(connection.clientId);
+    // Back to the connection screen, not straight into a new sign-in.
     setActive(null);
-    void signOut().catch(() => location.assign(home('#connect')));
+    location.assign(home('#connect'));
   });
   app.querySelector<HTMLSelectElement>('[data-who]')?.addEventListener('change', (e) => {
     const id = (e.target as HTMLSelectElement).value;
