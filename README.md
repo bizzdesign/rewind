@@ -74,7 +74,7 @@ Accounts with the same name are merged into one person, so someone with a passwo
 
 Rewind is a static page that signs each visitor in to **their own** Unify environment; nothing goes through Bizzdesign. The in-app help page (`#help`) is the walk-through people read; in short:
 
-- **Once per organisation, a Unify admin** (system administrator role) opens Unify Management › Configuration › **MCP Server Callbacks** and adds the page's address, e.g. `https://bizzdesign.github.io/rewind/`. That list is the redirect URLs of Unify's own (default) app client, the one with Unify's sign-in page.
+- **Once per organisation, a Unify admin** (system administrator role) opens Unify Management › Configuration › MCP Integration Configuration › **MCP Server Callbacks** (not AI co-worker › MCP endpoints, which registers servers the assistant calls) and adds the page's address, e.g. `https://bizzdesign.github.io/rewind/`. That list is the redirect URLs of Unify's own (default) app client, the one with Unify's sign-in page.
 - **Everyone, the first time:** type the Unify address on the connection screen. Rewind looks up the connection details from `<address>/env.js` (see below), suggests a name, and *Save and sign in* goes to the tenant's own sign-in page.
 - **Next time:** the connection is remembered in that browser. *Switch* picks another or adds one; *Sign out* forgets the sign-in in this browser.
 

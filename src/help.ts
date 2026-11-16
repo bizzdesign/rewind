@@ -45,12 +45,13 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
         <h2>For admins: add Rewind once</h2>
         <p>Your Unify only sends people back to addresses it knows. Rewind signs in through Unify’s own sign-in page, the same one MCP connectors such as Claude use, so you add Rewind’s address where those are listed. You need the system administrator role.</p>
         <ol class="howto">
-          <li>Open <strong>Unify Management</strong> and go to <strong>Configuration</strong>.</li>
-          <li>Scroll to <strong>MCP Server Callbacks</strong>.</li>
-          <li>Add exactly: ${copy(o.redirect)}</li>
+          <li>Open <strong>Unify Management</strong> and choose <strong>Configuration</strong> in the menu.</li>
+          <li>Scroll to <strong>MCP Integration Configuration</strong>, then <strong>MCP Server Callbacks</strong>.</li>
+          <li>In the field showing <code>https://example.com/api/callback</code>, enter exactly ${copy(o.redirect)} and press Enter. It appears in the list.</li>
           <li>Tell your colleagues: open Rewind, type your Unify address, and sign in. There’s nothing else to share.</li>
         </ol>
         <p class="muted small">The address must match to the character, including <code>https://</code> and the trailing slash. To stop Rewind signing in, remove it from that list again.</p>
+        <p class="muted small"><strong>Not under AI co-worker › MCP endpoints.</strong> That page registers servers the assistant calls; adding Rewind there doesn’t let anyone sign in, and the assistant would try to call it. If you added it there, delete that endpoint.</p>
         <p class="muted small"><strong>Why not App clients?</strong> An app client created under Unify Management › App clients doesn’t get Unify’s sign-in page yet: signing in with it shows “Login pages unavailable”. Once that’s fixed, an <em>Authorization code</em> client (not client credentials) with this address as redirect URL will work too; enter its client ID under Connection details.</p>
       </article>
 
@@ -91,7 +92,7 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
         <h2>If it doesn’t work</h2>
         <dl class="faq">
           <dt>The sign-in page says <code>redirect_mismatch</code> or “An error was encountered”</dt>
-          <dd>Your Unify doesn’t know Rewind yet. Ask your admin to add exactly ${copy(o.redirect)} under Configuration › MCP Server Callbacks.</dd>
+          <dd>Your Unify doesn’t know Rewind yet. Ask your admin to add exactly ${copy(o.redirect)} under Unify Management › Configuration › MCP Server Callbacks (not under AI co-worker › MCP endpoints).</dd>
           <dt>The sign-in page says “Login pages unavailable”</dt>
           <dd>The connection uses an app client from Unify Management › App clients, which has no sign-in page yet. Switch, remove the connection, and add it again from your Unify address, so it uses Unify’s default client.</dd>
           <dt>“Couldn’t load …/env.js” after typing the address</dt>
