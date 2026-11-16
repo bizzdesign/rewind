@@ -18,21 +18,19 @@ const app = document.querySelector<HTMLElement>('#app')!;
 const stage = document.createElement('div');
 document.body.append(stage);
 
-/** Before February, last year is the one worth looking back on. */
-const defaultYear = () => {
+/**
+ * Rewind plays one year: this one, or in January the year that just ended,
+ * when people look back. There is no year to choose.
+ */
+const theYear = () => {
   const now = new Date();
   return now.getMonth() < 1 ? now.getFullYear() - 1 : now.getFullYear();
 };
-const YEARS = (() => {
-  const y = new Date().getFullYear();
-  return [y - 2, y - 1, y];
-})();
 
-/** `#2026` for the lobby, `#2026/team` or `#2026/<user id>` for a story. */
+/** `#2026` for the lobby, `#2026/team` or `#2026/<user id>` for a story. The year in a link is ignored: it's always {@link theYear}. */
 function readHash(): { year: number; who?: string } {
-  const [y, who] = location.hash.slice(1).split('/');
-  const year = Number(y);
-  return { year: YEARS.includes(year) ? year : defaultYear(), who: who ? decodeURIComponent(who) : undefined };
+  const [, who] = location.hash.slice(1).split('/');
+  return { year: theYear(), who: who ? decodeURIComponent(who) : undefined };
 }
 const setHash = (year: number, who?: string) => history.replaceState(null, '', `${location.pathname}${location.search}#${year}${who ? `/${encodeURIComponent(who)}` : ''}`);
 
@@ -180,7 +178,7 @@ function lobby(): void {
       <div class="hero-block">
         <p class="eyebrow">${r.partial ? `1 January – ${esc(dayLabel(r.end))}` : `The whole of ${r.year}`}</p>
         <h1 class="lobby-title">Rewind <span class="accent">${r.year}</span></h1>
-        <p class="lead">A year in the knowledge graph, played back as a story: what we built, who built it, and when. Save the card at the end and share it.</p>
+        <p class="lead">A year in Unify, played back as a story: what we built, who built it, and when. Save the card at the end and share it.</p>
         <div class="row">
           <button class="primary big" data-play="team">▶ Play our year</button>
           ${source.me ? `<button class="big" data-play="${esc(source.me)}">${me ? `Play your year, ${esc(firstName(me.actor.name))}` : 'Play your year'}</button>` : ''}
@@ -191,21 +189,18 @@ function lobby(): void {
           <div><strong>${n(r.people.length)}</strong><span>contributors</span></div>
         </div>
       </div>
-      <div class="side">
-        ${
-          others.length
-            ? `<label class="pick">Play someone's year
+      ${
+        others.length
+          ? `<div class="side">
+              <label class="pick">Play someone's year
                 <select data-who>
                   <option value="">Choose a person…</option>
                   ${others.map((p) => `<option value="${esc(p.actor.id)}">${esc(p.actor.name)}</option>`).join('')}
                 </select>
-              </label>`
-            : ''
-        }
-        <div class="years" role="group" aria-label="Year">
-          ${YEARS.map((y) => `<button data-year="${y}" aria-pressed="${y === r.year}">${y}</button>`).join('')}
-        </div>
-      </div>
+              </label>
+            </div>`
+          : ''
+      }
       <footer class="muted footnote">
         Counted from Unify’s system stamps: who created, last edited or hid each element, link and view. An edit counts for whoever edited an element last, as Unify keeps only that one.
         Imports and system accounts are left out of the rhythm, the rankings and the awards.${r.truncated ? ' <strong>Some lists stopped at their cap, so the numbers are a lower bound.</strong>' : ''}${r.viewsFailed ? ' <strong>This tenant wouldn’t list its views, so views are left out.</strong>' : ''}
@@ -222,12 +217,6 @@ function lobby(): void {
     const id = (e.target as HTMLSelectElement).value;
     if (id) play(id);
   });
-  app.querySelectorAll<HTMLButtonElement>('[data-year]').forEach((b) =>
-    b.addEventListener('click', () => {
-      const y = Number(b.dataset.year);
-      if (y !== r.year) void load(y).then((ok) => ok && lobby());
-    }),
-  );
 }
 
 function play(who: string): void {

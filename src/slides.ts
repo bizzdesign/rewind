@@ -91,7 +91,7 @@ export function teamSlides(r: Rewind, tenant: string): Slide[] {
     html: `
       <p class="eyebrow">${esc(tenant)}</p>
       <h1 class="mega">Rewind<br><span class="accent">${r.year}</span></h1>
-      <p class="lead">A year of the knowledge graph, played back. Covers ${esc(range(r))}.</p>
+      <p class="lead">A year in Unify, played back. Covers ${esc(range(r))}.</p>
       <p class="hint">Tap or press → to go on</p>`,
   });
 
@@ -252,7 +252,7 @@ export function personSlides(r: Rewind, p: PersonYear | undefined, name: string)
     html: `
       <p class="eyebrow">Rewind ${r.year}</p>
       <h1 class="mega">${esc(first)},<br><span class="accent">this was your year</span></h1>
-      <p class="lead">Your part in the knowledge graph, ${esc(range(r))}.</p>
+      <p class="lead">Your part in Unify, ${esc(range(r))}.</p>
       <p class="hint">Tap or press → to go on</p>`,
   });
 

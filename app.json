@@ -5,7 +5,7 @@
     "team": "Unify frontend",
     "contact": "m.peters@bizzdesign.com"
   },
-  "purpose": "Play back a year in the Unify knowledge graph as a story (the team's year, or one person's) and save a card to share. Runs in the browser against the customer's own tenant.",
+  "purpose": "Play back a year in Unify as a story (the team's year, or one person's) and save a card to share. Runs in the browser against the customer's own tenant.",
   "tier": "experimental",
   "capabilities": [
     "read"

@@ -165,21 +165,6 @@ button.ghost {
   background: var(--u-page);
   color: var(--u-text);
 }
-.years {
-  background: var(--u-section);
-  border: 1px solid var(--u-border);
-  border-radius: var(--u-radius);
-  padding: 3px;
-}
-.years button {
-  border-radius: 3px;
-  color: var(--u-text-secondary);
-}
-.years button[aria-pressed='true'] {
-  background: var(--u-page);
-  color: var(--u-brand-emphasized);
-  box-shadow: 0 1px 2px rgba(19, 22, 25, 0.12);
-}
 .footnote {
   color: var(--u-text-secondary);
 }

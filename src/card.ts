@@ -43,7 +43,7 @@ export function teamCard(r: Rewind, tenant: string): CardSpec {
   ];
   return {
     eyebrow: `${tenant} · Rewind ${r.year}`,
-    title: 'Our year in the knowledge graph',
+    title: 'Our year in Unify',
     subtitle: r.people.length ? `Top contributors: ${r.people.slice(0, 3).map((p) => p.actor.name).join(', ')}` : '',
     tiles,
     footer: r.partial ? `1 January – ${dayLabel(r.end)}` : `${r.year}`,

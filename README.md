@@ -1,10 +1,10 @@
 # Rewind
 
-A year in the Unify knowledge graph, played back as a story you can share. Built on `@bizzdesign/sdk-bundle` (browser entry). Read-only.
+A year in Unify, played back as a story you can share. Built on `@bizzdesign/sdk-bundle` (browser entry). Read-only.
 
 ## What you see
 
-**The lobby** shows the year at a glance and offers three stories: *our year* (the whole tenant), *your year* (whoever is signed in) and *someone's year* (pick a person). You can switch between this year and the two before it. Before February it opens on last year.
+**The lobby** shows the year at a glance and offers three stories: *our year* (the whole tenant), *your year* (whoever is signed in) and *someone's year* (pick a person). It plays one year: the current one, or in January the year that just ended. There's no year to pick.
 
 **A story** plays full-screen like a phone story: progress bars on top, tap the right of the card (or →) to go on, tap the left (or ←) to go back, hold to pause (or Space), Esc to close. Each slide moves on by itself when its bar fills. Numbers count up and bars grow; with *reduce motion* on, they just appear.
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A year in the Unify knowledge graph, played back as a story you can share",
+  "description": "A year in Unify, played back as a story you can share",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc --noEmit && vite build",

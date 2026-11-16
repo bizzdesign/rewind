@@ -20,7 +20,7 @@ export function renderHelp(app: HTMLElement, o: { redirect: string; back: string
       <div class="page-head">
         <p class="eyebrow">How it works</p>
         <h1>Rewind: your year in Unify</h1>
-        <p class="lead">Rewind plays back a year of your Unify knowledge graph as a short story: what the team added, the busiest days, the most connected elements, who did what. It ends with a card you can save and share. Each person can also play their own year.</p>
+        <p class="lead">Rewind plays back a year in Unify as a short story: what the team added, the busiest days, the most connected elements, who did what. It ends with a card you can save and share. Each person can also play their own year.</p>
       </div>
 
       <nav class="toc panel" aria-label="On this page">

@@ -1,6 +1,6 @@
 # Rewind: notes for agents
 
-A read-only SDK app that plays back a year of the Unify knowledge graph as a shareable story (see README.md for what users see).
+A read-only SDK app that plays back a year in Unify as a shareable story (see README.md for what users see).
 
 ## What talks to the SDK
 

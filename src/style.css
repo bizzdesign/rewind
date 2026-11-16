@@ -266,24 +266,6 @@ button[disabled] {
 .pick select option {
   background: #1b1838;
 }
-.years {
-  display: flex;
-  gap: 6px;
-  padding: 4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  width: max-content;
-  max-width: 100%;
-}
-.years button {
-  border: 0;
-  background: transparent;
-  padding: 0.5em 1.1em;
-}
-.years button[aria-pressed='true'] {
-  background: var(--ink);
-  color: var(--night);
-}
 .footnote {
   grid-area: foot;
   font-size: 0.85rem;
