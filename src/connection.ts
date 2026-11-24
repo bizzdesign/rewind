@@ -19,7 +19,7 @@ export interface Connection {
   cognitoDomain: string;
   /** env.js `cognitoUserPoolId`; its prefix is the region. */
   userPoolId: string;
-  /** Unify's default app client (env.js cognitoClientId), whose redirect URLs the admin extends with Rewind's address. */
+  /** The admin's Authorization code app client for Rewind, or Unify's default client (env.js cognitoClientId) when Rewind was added under MCP Server Callbacks. */
   clientId: string;
   /** From the developer's .env: shown, never stored or removed. */
   builtIn?: boolean;
@@ -97,7 +97,7 @@ export function problems(d: Partial<ConnectionDraft>): string[] {
   }
   if (!d.cognitoDomain || !/^[a-z0-9.-]+$/i.test(cleanDomain(d.cognitoDomain))) out.push('The sign-in domain is missing (cognitoDomain in env.js).');
   if (!d.userPoolId || !/^[a-z]{2}(-[a-z]+)+-\d_[A-Za-z0-9]+$/.test(d.userPoolId.trim())) out.push('The user pool ID is missing or malformed; it looks like eu-west-1_AbC123dEf (cognitoUserPoolId in env.js).');
-  if (!d.clientId || !/^[a-z0-9]{20,40}$/i.test(d.clientId.trim())) out.push('The app client ID is missing or malformed (cognitoClientId in env.js; Unify Management shows it as Default App Client ID).');
+  if (!d.clientId || !/^[a-z0-9]{20,40}$/i.test(d.clientId.trim())) out.push('The app client ID is missing or malformed: 26 letters and digits, from your admin (Unify Management › App clients), or Unify’s default client found by the lookup.');
   return out;
 }
 

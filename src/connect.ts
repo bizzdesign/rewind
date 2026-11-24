@@ -76,6 +76,11 @@ export function renderConnect(app: HTMLElement, o: ConnectOptions): void {
             <p class="found" aria-live="polite"></p>
           </li>
           <li>
+            <label for="appClientId">App client ID from your admin</label>
+            <p class="hint">Your Unify admin creates it once under Unify Management › App clients. Leave it empty if your admin added Rewind under MCP Server Callbacks instead.</p>
+            <input id="appClientId" name="appClientId" autocomplete="off" spellcheck="false" placeholder="26 letters and digits (optional)" />
+          </li>
+          <li>
             <label for="name">Name this connection</label>
             <input id="name" name="name" placeholder="e.g. Acme production" />
           </li>
@@ -91,7 +96,7 @@ export function renderConnect(app: HTMLElement, o: ConnectOptions): void {
           <input id="cognitoDomain" name="cognitoDomain" placeholder="…auth.eu-central-1.amazoncognito.com" />
           <label for="userPoolId">User pool ID <span class="muted">(cognitoUserPoolId · UserPool ID)</span></label>
           <input id="userPoolId" name="userPoolId" placeholder="eu-central-1_AbC123dEf" />
-          <label for="clientId">App client ID <span class="muted">(cognitoClientId · Default App Client ID)</span></label>
+          <label for="clientId">Default app client ID <span class="muted">(cognitoClientId · Default App Client ID; used when step 2 is empty)</span></label>
           <input id="clientId" name="clientId" autocomplete="off" spellcheck="false" placeholder="26 letters and digits" />
         </details>
         <ul class="problems bad" role="alert"></ul>
@@ -195,13 +200,14 @@ export function renderConnect(app: HTMLElement, o: ConnectOptions): void {
       graphqlUrl: field('graphqlUrl').value,
       cognitoDomain: field('cognitoDomain').value,
       userPoolId: field('userPoolId').value,
-      clientId: field('clientId').value,
+      // The admin's own app client wins; Unify's default client is the fallback (MCP Server Callbacks route).
+      clientId: field('appClientId').value.trim() || field('clientId').value,
     };
     const list = problems(draft);
     const box = app.querySelector<HTMLElement>('.problems')!;
     box.innerHTML = list.map((p) => `<li>${esc(p)}</li>`).join('');
     if (list.length) {
-      if (list.some((p) => /GraphQL|sign-in domain|user pool|app client/.test(p))) values.open = true;
+      if (list.some((p) => /GraphQL|sign-in domain|user pool/.test(p)) || (list.some((p) => /app client/.test(p)) && !field('appClientId').value.trim())) values.open = true;
       return;
     }
     o.use(saveConnection(draft));
